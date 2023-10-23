@@ -1,5 +1,10 @@
 <?php 
 
+require_once("database.php");
+
+$classes = getAllClasses();
+
+
  require_once("entete.php");
 
     

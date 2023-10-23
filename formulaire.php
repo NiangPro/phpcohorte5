@@ -38,7 +38,6 @@
 <?php 
 
     if (isset($_GET["retour"])) {
-        # code...
         echo $_GET["retour"];
     }
 
