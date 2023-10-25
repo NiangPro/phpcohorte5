@@ -1,20 +1,20 @@
 <?php 
 
-require_once("database.php");
+require_once("models/database.php");
 
 $classes = getAllClasses();
 
+ require_once("includes/entete.php");
 
- require_once("entete.php");
-
-    
+   
+// routeur 
 if (isset($_GET["page"]) && $_GET["page"] == "classe") {
     # code...
-    require_once("classe.php");
+    require_once("controllers/classController.php");
 }else{
-    require_once("accueil.php");
+    require_once("controllers/accueilController.php");
 
 }
 
 
-require_once("pied.php");
+require_once("includes/pied.php");
