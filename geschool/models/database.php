@@ -40,3 +40,73 @@ function addClasse($nom, $taille)
         die("Erreur :".$th->getMessage());
     }
 }
+
+function addEleve($prenom, $nom, $datnais, $lieunais, $sexe, $tel, $idclasse)
+{
+    global $db;
+    try {
+        $q = $db->prepare("INSERT INTO eleve VALUES (null, :prenom, :nom, :datnais, :lieunais, :sexe, :tel, :idclasse)");
+        return $q->execute([
+            "prenom" => $prenom,
+            "nom" => $nom,
+            "datnais" => $datnais,
+            "lieunais" => $lieunais,
+            "sexe" => $sexe,
+            "tel" => $tel,
+            "idclasse" => $idclasse
+        ]);
+    }catch (PDOException $th) {
+            die("Erreur :".$th->getMessage());
+    }
+}
+
+function getEleveById($id)
+{
+    global $db;
+    try {
+        $q = $db->prepare("SELECT * FROM eleve WHERE id =:id");
+        $q->execute(["id" => $id]);
+
+        return $q->fetch(PDO::FETCH_OBJ);
+    } catch (PDOException $th) {
+        die("Erreur :".$th->getMessage());
+    }
+}
+
+function getAllEleves()
+{
+    global $db;
+    try {
+        $q = $db->prepare("SELECT e.id as id, e.nom as nom, prenom, lieunais, datnais, sexe, tel, c.nom as nomclasse
+                        FROM eleve e, classe c
+                        WHERE e.idclasse = c.id");
+        $q->execute();
+
+        return $q->fetchAll(PDO::FETCH_OBJ);
+    } catch (PDOException $th) {
+        die("Erreur :".$th->getMessage());
+    }
+}
+
+function editEleve($id, $prenom, $nom, $datnais, $lieunais, $sexe, $tel, $idclasse)
+{
+    global $db;
+    try {
+        $q = $db->prepare("UPDATE eleve SET prenom =:prenon, nom =:nom, datnais =:datnais
+                            lieunais =:lieunais, sexe=:sexe, tel=:tel, idclasse =:idclasse
+                            WHERE id=:id");
+
+        return $q->execute([
+            "id" => intval($id),
+            "prenom" => $prenom,
+            "nom" => $nom,
+            "datnais" => $datnais,
+            "lieunais" => $lieunais,
+            "sexe" => $sexe,
+            "tel" => $tel,
+            "idclasse" => intval($idclasse),
+        ]);
+    } catch (PDOException $th) {
+        die("Erreur :".$th->getMessage());
+    }
+}

@@ -15,6 +15,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="?page=classe">Classe</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="?page=eleve">Eleve</a>
+                </li>
                 
             </ul>
             

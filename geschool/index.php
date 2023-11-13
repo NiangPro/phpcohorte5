@@ -8,9 +8,18 @@ $classes = getAllClasses();
 
    
 // routeur 
-if (isset($_GET["page"]) && $_GET["page"] == "classe") {
-    # code...
-    require_once("controllers/classController.php");
+if (isset($_GET["page"])) {
+    switch ($_GET["page"]) {
+        case 'eleve':
+           
+            require_once("controllers/eleveController.php");
+            break;
+            
+            
+        default:
+            require_once("controllers/classController.php");
+            break;
+    }
 }else{
     require_once("controllers/accueilController.php");
 
