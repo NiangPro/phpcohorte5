@@ -6,7 +6,7 @@
         </div>
     </div>
     <div class="card-body">
-        <form action="" method="post">
+        <form action="" method="post" enctype="multipart/form-data">
 
             <?php if(isset($_GET["id"])): ?>
                 <input type="hidden" name="id" value="<?= $e->id ?>">
@@ -45,6 +45,10 @@
                     <label for="">Sexe</label><br>
                     <label for="" class="radio-inline">Masculin <input type="radio" value="Masculin" <?= (isset($e) && $e->sexe == "Masculin") ? "checked": ""  ?> name="sexe"></label>
                     <label for="" class="radio-inline">Feminin <input type="radio"  <?= (isset($e) && $e->sexe == "Feminin") ? "checked": ""  ?> value="Feminin" name="sexe"></label>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="">Image de profil</label>
+                    <input type="file" name="profil"  class="form-control">
                 </div>
             </div>
 

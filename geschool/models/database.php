@@ -41,11 +41,11 @@ function addClasse($nom, $taille)
     }
 }
 
-function addEleve($prenom, $nom, $datnais, $lieunais, $sexe, $tel, $idclasse)
+function addEleve($prenom, $nom, $datnais, $lieunais, $sexe, $tel, $idclasse, $profil)
 {
     global $db;
     try {
-        $q = $db->prepare("INSERT INTO eleve VALUES (null, :prenom, :nom, :datnais, :lieunais, :sexe, :tel, :idclasse)");
+        $q = $db->prepare("INSERT INTO eleve VALUES (null, :prenom, :nom, :datnais, :lieunais, :sexe, :tel, :idclasse, :profil)");
         return $q->execute([
             "prenom" => $prenom,
             "nom" => $nom,
@@ -53,7 +53,8 @@ function addEleve($prenom, $nom, $datnais, $lieunais, $sexe, $tel, $idclasse)
             "lieunais" => $lieunais,
             "sexe" => $sexe,
             "tel" => $tel,
-            "idclasse" => $idclasse
+            "idclasse" => $idclasse,
+            "profil" => $profil
         ]);
     }catch (PDOException $th) {
             die("Erreur :".$th->getMessage());
@@ -77,7 +78,7 @@ function getAllEleves()
 {
     global $db;
     try {
-        $q = $db->prepare("SELECT e.id as id, e.nom as nom, prenom, lieunais, datnais, sexe, tel, c.nom as nomclasse
+        $q = $db->prepare("SELECT e.id as id, e.nom as nom, prenom, lieunais, datnais, sexe, tel, c.nom as nomclasse, profil
                         FROM eleve e, classe c
                         WHERE e.idclasse = c.id");
         $q->execute();
@@ -91,21 +92,32 @@ function getAllEleves()
 function editEleve($id, $prenom, $nom, $datnais, $lieunais, $sexe, $tel, $idclasse)
 {
     global $db;
-    try {
-        $q = $db->prepare("UPDATE eleve SET prenom =:prenon, nom =:nom, datnais =:datnais
-                            lieunais =:lieunais, sexe=:sexe, tel=:tel, idclasse =:idclasse
-                            WHERE id=:id");
+    try{
+        $q = $db->prepare("UPDATE eleve SET prenom=:prenom, nom=:nom, 
+        datnais=:datnais, lieunais=:lieunais,
+        sexe=:sexe, tel=:tel, idclasse=:idclasse
+        WHERE id=:id");
+    return $q->execute([
+        "id"=>$id,
+        "prenom"=>$prenom,
+        "nom"=>$nom,
+        "datnais"=>$datnais,
+        "lieunais"=>$lieunais,
+        "sexe"=>$sexe,
+        "tel"=>$tel,
+        "idclasse"=>$idclasse
+    ]);
 
-        return $q->execute([
-            "id" => intval($id),
-            "prenom" => $prenom,
-            "nom" => $nom,
-            "datnais" => $datnais,
-            "lieunais" => $lieunais,
-            "sexe" => $sexe,
-            "tel" => $tel,
-            "idclasse" => intval($idclasse),
-        ]);
+    } catch (PDOException $th) {
+        die("Erreur :".$th->getMessage());
+    }
+}
+
+function supprimeEleve($id){
+    global $db;
+    try {
+        $q = $db->prepare("DELETE FROM eleve WHERE id=:id");
+        return $q->execute(["id"=>$id]);
     } catch (PDOException $th) {
         die("Erreur :".$th->getMessage());
     }
